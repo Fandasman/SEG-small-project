@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import SignUpForm, LogInForm, UpdateForm
+from .forms import SignUpForm, LogInForm, UpdateForm, ClubApplicationForm
 from django.contrib.auth.forms import UserChangeForm
 from .models import Club
 
@@ -90,4 +90,4 @@ def join_club(request, club_id):
                 return redirect('show_club')
     else:
         form = ClubApplicationForm()
-    return render(request, 'join_club.html', {'form': form,})
+    return render(request, 'join_club.html', {'form': form, 'club_id': club_id})

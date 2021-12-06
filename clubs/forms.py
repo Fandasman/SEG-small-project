@@ -55,10 +55,11 @@ class ClubApplicationForm(forms.ModelForm):
     class Meta:
         model = ClubMember
         fields = []
-        statement = forms.CharField(
-            label = "Why would you like to be a member of this club?",
-            widget = forms.Textarea()
-        )
+    
+    statement = forms.CharField(
+        label = "Why would you like to be a member of this club?",
+        widget = forms.Textarea()
+    )
 
     def save(self):
         super().save(commit=False)
