@@ -10,11 +10,11 @@
   <div class="col-12">
       <p class="club-description">{{ club.description }}</p>
         <!-- INCLUDE MEMBER COUNT -->
-          <!-- INCLUDE APPLICATION FUNCTIONALITY AND LEAVE/JOIN BUTTONS -->
+          <!-- INCLUDE LEAVE CLUB FUNCTIONALITY AND BUTTON -->
           <!-- INCLUDE CLUB OWNER DETAILS -->
           <!-- INCLUDE TOURNAMENT DETAILS -->
         {% if user.is_authenticated %}
-        <button class="btn btn-primary">Join</button>
+        <button class="btn btn-primary" href="{% url 'join_club' %}">Join</button>
         {% else %}
         <form action="{% url 'log_in' %}">
           <input type="submit" class="btn btn-secondary" value="Log in to join"/>

@@ -50,3 +50,18 @@ class UpdateForm(forms.ModelForm):
         model = User
         fields = ["first_name", "last_name", "username", "email", "experience", "bio"]
         widgets = { "bio": forms.Textarea() }
+
+class ClubApplicationForm(forms.Form):
+    statement = forms.CharField(
+        label = "Why would you like to be a member of this club?",
+        widget = forms.Textarea()
+    )
+
+    def save(self):
+        super().save(commit=False)
+        club_member = ClubMember.objects.create_clubmember(
+                self.cleaned_data.get('username'),
+                self.cleaned_data.get('name'),
+            )
+        return club_member
+

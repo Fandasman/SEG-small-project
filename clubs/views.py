@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
@@ -76,3 +75,19 @@ def show_club(request, club_id):
         return render(request, 'show_club.html',
             {'club': club,}
         )
+
+"""Club application form view"""
+def join_club(request, club_id):
+    if request.method=='POST':
+        form = ClubApplicationForm(request.POST)
+        try:
+            club = Club.objects.get(id=club_id)
+        except ObjectDoesNotExist:
+            return redirect('home')
+        else:
+            if form.is_valid():
+                form.save()
+                return redirect('show_club')
+    else:
+        form = ClubApplicationForm()
+    return render(request, 'join_club.html', {'form': form,})
