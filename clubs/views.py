@@ -16,7 +16,7 @@ from .models import Club
 def home(request):
     return render(request, 'home.html')
 
-
+"""Sign up view"""
 def sign_up(request):
     if request.method=='POST':
         form = SignUpForm(request.POST)
@@ -28,7 +28,7 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
-
+"""Log in view"""
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
@@ -46,10 +46,12 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
+"""Log out view"""
 def log_out(request):
     logout(request)
     return redirect('home')
 
+"""Profile page view"""
 def profile(request):
     if request.method=='POST':
         form = UpdateForm(request.POST, instance=request.user)
@@ -60,6 +62,7 @@ def profile(request):
         form = UpdateForm(instance=request.user)
     return render(request, 'profile.html', {'form': form})
 
+"""  """
 def profile_clubs(request):
     return render(request, 'profile_clubs.html')    
 
