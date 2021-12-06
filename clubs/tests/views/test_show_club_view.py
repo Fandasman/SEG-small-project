@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import Club, User
+from clubs.models import User, Club
 from clubs.tests.helpers import reverse_with_next
 
 class ShowClubTest(TestCase):

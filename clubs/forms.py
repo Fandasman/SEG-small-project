@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User
+from .models import User, ClubMember
 from django.contrib.auth.forms import UserChangeForm
 
 class SignUpForm(forms.ModelForm):
@@ -51,17 +51,20 @@ class UpdateForm(forms.ModelForm):
         fields = ["first_name", "last_name", "username", "email", "experience", "bio"]
         widgets = { "bio": forms.Textarea() }
 
-class ClubApplicationForm(forms.Form):
-    statement = forms.CharField(
-        label = "Why would you like to be a member of this club?",
-        widget = forms.Textarea()
-    )
+class ClubApplicationForm(forms.ModelForm):
+    class Meta:
+        model = ClubMember
+        fields = []
+        statement = forms.CharField(
+            label = "Why would you like to be a member of this club?",
+            widget = forms.Textarea()
+        )
 
     def save(self):
         super().save(commit=False)
-        club_member = ClubMember.objects.create_clubmember(
-                self.cleaned_data.get('username'),
-                self.cleaned_data.get('name'),
+        club_member = ClubMember.objects.create_club_member(
+                user = self.cleaned_data.get('user'),
+                club = self.cleaned_data.get('club')
             )
         return club_member
 

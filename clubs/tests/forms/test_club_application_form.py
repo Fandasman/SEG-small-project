@@ -1,10 +1,16 @@
 from django.test import TestCase
 from django import forms
 from clubs.forms import ClubApplicationForm
-from clubs.models import User, Club
+from clubs.models import ClubMember
 
 class ClubApplicationFormTestCase(TestCase):
     """Unit tests of the club application form."""
+
+    fixtures = [
+        'clubs/tests/fixtures/default_user.json',
+        'clubs/tests/fixtures/default_club.json',
+        'clubs/tests/fixtures/default_club_member.json'
+    ]
 
     def setUp(self):
         self.form_input = {
@@ -20,7 +26,7 @@ class ClubApplicationFormTestCase(TestCase):
         self.assertIn('statement', form.fields)
 
     def test_form_must_save_correctly(self):
-        form = ClubMemberForm(data=self.form_input)
+        form = ClubApplicationForm(data=self.form_input)
         before_count = ClubMember.objects.count()
         form.save()
         after_count = ClubMember.objects.count()
