@@ -53,6 +53,11 @@ def clubs(request):
     clubs = Club.objects.all()
     return render(request, 'clubs.html', {'clubs': clubs})
 
+def myClubs(request):
+    loggedUser = request.user
+    clubs = Club.objects.filter(owner=loggedUser)
+    return render(request, 'clubs.html', {'clubs': clubs})
+
 def profile(request):
     if request.method=='POST':
         form = UpdateForm(request.POST, instance=request.user)
