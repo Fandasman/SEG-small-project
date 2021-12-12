@@ -54,7 +54,11 @@ class UpdateForm(forms.ModelForm):
 class ClubApplicationForm(forms.ModelForm):
     class Meta:
         model = ClubMember
-        fields = []
+        fields = ['user', 'club']
+        widget = {
+            'user':
+            'club': 
+        }
     
     statement = forms.CharField(
         label = "Why would you like to be a member of this club?",
@@ -63,9 +67,10 @@ class ClubApplicationForm(forms.ModelForm):
 
     def save(self):
         super().save(commit=False)
-        club_member = ClubMember.objects.create_club_member(
-                user = self.cleaned_data.get('user'),
-                club = self.cleaned_data.get('club')
+        club_member = ClubMember.objects.create(
+                self.cleaned_data.get('user'),
+                self.cleaned_data.get('club'),
+                statement = self.cleaned_data.get('statement')
             )
         return club_member
 

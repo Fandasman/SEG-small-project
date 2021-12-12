@@ -47,19 +47,6 @@ class ClubApplicationFormViewTestCase(TestCase):
         self.assertTrue(isinstance(form, ClubApplicationForm))
         self.assertFalse(form.is_bound)
 
-    # def test_unsuccessful_club_application_form(self):
-    #     before_count = ClubMember.objects.count()
-    #     self.form_input ['statement'] = 'Hello!'
-    #     response = self.client.post(self.url, self.form_input)
-    #     after_count = ClubMember.objects.count()
-    #     self.assertEqual(after_count, before_count)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'join_club.html')
-    #     form = response.context['form']
-    #     self.assertTrue(isinstance(form, ClubApplicationForm))
-    #     self.assertTrue(form.is_bound)
-    #     # self.assertFalse(self.is_logged_in())
-
     def test_successful_club_application_form(self):
         before_count = ClubMember.objects.count()
         response = self.client.post(self.url, self.form_input, follow = True)
