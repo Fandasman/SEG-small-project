@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import SignUpForm, LogInForm, UpdateForm, PasswordForm, ClubCreationForm
+from .forms import SignUpForm, LogInForm, UpdateForm, PasswordForm, ClubCreationForm, PassOwnershipForm
 from .models import User, Club, Tournament, ClubMember, ClubOfficer
 
 from django.contrib.auth.decorators import login_required
@@ -175,3 +175,20 @@ def member_id(request, userid):
 def tournaments(request):
     tournaments = Tournament.objects.all()
     return render(request, 'tournaments.html', {'tournaments': tournaments})
+
+@login_required
+def make_owner(request, club_id):
+    club_members = ClubMember.objects.filter(club=club_id)
+    club = Club.objects.get(id = club_id)
+    current_user = request.user
+    if request.method=='POST':
+        form = PassOwnershipForm(request.POST, club_members)
+        if form.is_valid():
+            password = form.cleaned_data.get('password')
+            if check_password(password, current_user.password):
+                new_owner = form.cleaned_data.get['members']['user']
+                club.owner = new_owner
+                club.save()
+    else:
+        form = PassOwnershipForm(club_members)
+    return render(request, 'make_owner.html', {'form': form, 'club': club})

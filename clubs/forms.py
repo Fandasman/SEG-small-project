@@ -77,3 +77,12 @@ class ClubCreationForm(forms.ModelForm):
         model = Club
         fields = ["name", "location", "description"]
         widgets = { "description": forms.Textarea() }
+
+class PassOwnershipForm(forms.Form):
+
+    def __init__(self, member_list, *args, **kwargs):
+        super(PassOwnershipForm, self).__init__(*args, **kwargs)
+        self.fields['members'] = forms.ChoiceField(choices=tuple([
+            (user, user) for user in member_list]))
+
+    password = forms.CharField(label="Password", widget=forms.PasswordInput())
