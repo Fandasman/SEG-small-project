@@ -93,6 +93,21 @@ def password(request):
     form = PasswordForm()
     return render(request, 'password.html', {'form': form})
 
+# Club application form view
+def join_club(request, club_id):
+    if request.method=='POST':
+        form = ClubApplicationForm(request.POST)
+        try:
+            club = Club.objects.get(id=club_id)
+        except ObjectDoesNotExist:
+            return redirect('home')
+        else:
+            if form.is_valid():
+                form.save()
+                return redirect('show_club')
+    else:
+        form = ClubApplicationForm()
+    return render(request, 'join_club.html', {'form': form, 'club_id': club_id})
 
 # Club page view
 def show_club(request, club_id):

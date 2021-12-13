@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends "base_content.html" %}
+{% block title %}
+| Club Apllication Form
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <h1>Club Application form</h1>
+    <form action="{% url 'join_club' club_id %}" method="post">
+      {% csrf_token %}
+      {% include 'partials/bootstrap_form.html' with form=form %}
+      <input type="submit" value="Join" class = "btn btn-primary">
+      </form>
+  </div>
+</div>
+{% endblock %}

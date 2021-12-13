@@ -71,6 +71,28 @@ class PasswordForm(forms.Form):
         if password_confirmation != new_password:
             self.add_error('password_confirmation', "Passwords don't match!")
 
+class ClubApplicationForm(forms.ModelForm):
+    class Meta:
+        model = ClubMember
+        fields = ['user', 'club']
+        widget = {
+            'user': forms.HiddenInput()
+            'club': forms.HiddenInput()
+        }
+    
+    statement = forms.CharField(
+        label = "Why would you like to be a member of this club?",
+        widget = forms.Textarea()
+    )
+
+    def save(self):
+        super().save(commit=False)
+        club_member = ClubMember.objects.create(
+                self.cleaned_data.get('user'),
+                self.cleaned_data.get('club'),
+                statement = self.cleaned_data.get('statement')
+            )
+        return club_member
 
 class ClubCreationForm(forms.ModelForm):
     class Meta:
