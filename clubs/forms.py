@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User, Club
+from .models import User, Club, ClubMember
 from django.contrib.auth.forms import UserChangeForm
 
 class SignUpForm(forms.ModelForm):
@@ -79,9 +79,10 @@ class ClubCreationForm(forms.ModelForm):
         widgets = { "description": forms.Textarea() }
 
 class PassOwnershipForm(forms.Form):
-    user = User.objects.get(username = 'arham_admin')
-    CHOICE = [
-        (user, user)
-    ]
-    members = forms.CharField(label="Select new owner", widget = forms.Select(choices = CHOICE))
+    
+    def __init__(self, member_list, *args, **kwargs):
+        super(PassOwnershipForm, self).__init__(*args, **kwargs)
+        self.fields['members'] = forms.ChoiceField(choices=tuple([
+            (user, user) for user in member_list]))
+
     password = forms.CharField(label="Password", widget=forms.PasswordInput())

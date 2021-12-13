@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls.base import is_valid_path
 from .forms import ClubCreationForm, PasswordForm, SignUpForm, LogInForm, UpdateForm, PassOwnershipForm
-from .models import Club, User
+from .models import Club, User, ClubMember
 
 # Create the main page view
 def home(request):
@@ -126,14 +126,18 @@ def club_creator(request):
 
 @login_required
 def make_owner(request, club_id):
+    club_members = ClubMember.objects.filter(club=club_id)
     club = Club.objects.get(id = club_id)
+    user = request.user
     if request.method=='POST':
-        form = PassOwnershipForm(request.POST)
+        form = PassOwnershipForm(request.POST, club_members)
         if form.is_valid():
-            new_owner = form.cleaned_data.get('members')
-            club.owner = new_owner
-            club.save()
+            password = form.cleaned_data.get('password')
+            if check_password(password, user.password):
+                new_owner = form.cleaned_data.get['members']['user']
+                club.owner = new_owner
+                club.save()
     else:
-        form = PassOwnershipForm()
+        form = PassOwnershipForm(club_members)
     return render(request, 'make_owner.html', {'form': form, 'club': club})
     
