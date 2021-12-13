@@ -23,10 +23,7 @@ class MakeOwnerTest(TestCase):
     def test_password_url(self):
         self.assertEqual(self.url, f'/pass_ownership/{self.club.id}/')
 
-    def test_get_password_redirects_when_not_logged_in(self):
-        redirect_url = reverse_with_next('log_in', self.url)
-        response = self.client.get(self.url)
-        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+    
 
 
 
