@@ -77,3 +77,11 @@ class ClubCreationForm(forms.ModelForm):
         model = Club
         fields = ["name", "location", "description"]
         widgets = { "description": forms.Textarea() }
+
+class PassOwnershipForm(forms.Form):
+    user = User.objects.get(username = 'arham_admin')
+    CHOICE = [
+        (user, user)
+    ]
+    members = forms.CharField(label="Select new owner", widget = forms.Select(choices = CHOICE))
+    password = forms.CharField(label="Password", widget=forms.PasswordInput())

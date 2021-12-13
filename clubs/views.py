@@ -1,18 +1,17 @@
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserChangeForm
-from django.contrib.auth.hashers import check_password
 from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import SignUpForm, LogInForm, UpdateForm, PasswordForm, ClubCreationForm
-from .models import User, Club
-from django.contrib.auth.decorators import login_required
+from django.urls.base import is_valid_path
+from .forms import ClubCreationForm, PasswordForm, SignUpForm, LogInForm, UpdateForm, PassOwnershipForm
+from .models import Club, User
 
 # Create the main page view
 def home(request):
@@ -56,7 +55,11 @@ def clubs(request):
     clubs = Club.objects.all()
     return render(request, 'clubs.html', {'clubs': clubs})
 
-@login_required
+def myClubs(request):
+    loggedUser = request.user
+    clubs = Club.objects.filter(owner=loggedUser)
+    return render(request, 'clubs.html', {'clubs': clubs})
+
 def profile(request):
     if request.method=='POST':
         form = UpdateForm(request.POST, instance=request.user)
@@ -68,13 +71,13 @@ def profile(request):
     return render(request, 'profile.html', {'form': form})
 
 def profile_clubs(request):
-    return render(request, 'profile_clubs.html')
+    return render(request, 'profile_clubs.html')    
 
 # Edit password view
 @login_required
 def password(request):
     user = request.user
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PasswordForm(data = request.POST)
         if form.is_valid():
             password = form.cleaned_data.get('password')
@@ -92,8 +95,7 @@ def password(request):
     form = PasswordForm()
     return render(request, 'password.html', {'form': form})
 
-
-# Club page view
+"""Club page view"""
 def show_club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
@@ -107,7 +109,7 @@ def show_club(request, club_id):
 # View for the club creator
 @login_required
 def club_creator(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         form = ClubCreationForm(request.POST)
         current_user = request.user
         if form.is_valid():
@@ -118,4 +120,20 @@ def club_creator(request):
             return redirect('show_club', club.id)
     else:
         form = ClubCreationForm()
-    return render(request, 'club_creator.html', {'form': form})
+    return render(request, 'club_creator.html', {'form' : form}) 
+
+
+
+@login_required
+def make_owner(request, club_id):
+    club = Club.objects.get(id = club_id)
+    if request.method=='POST':
+        form = PassOwnershipForm(request.POST)
+        if form.is_valid():
+            new_owner = form.cleaned_data.get('members')
+            club.owner = new_owner
+            club.save()
+    else:
+        form = PassOwnershipForm()
+    return render(request, 'make_owner.html', {'form': form, 'club': club})
+    

@@ -13,5 +13,5 @@ class UserAdmin(admin.ModelAdmin):
 class ClubAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
     list_display = [
-        'name', 'location', 'description',
+        'name', 'location', 'description','owner' 
     ]
