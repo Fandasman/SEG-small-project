@@ -80,9 +80,13 @@ class ClubCreationForm(forms.ModelForm):
 
 class PassOwnershipForm(forms.Form):
 
-    def __init__(self, member_list, *args, **kwargs):
+    def __init__(self, club_members, *args, **kwargs):
         super(PassOwnershipForm, self).__init__(*args, **kwargs)
-        self.fields['members'] = forms.ChoiceField(choices=tuple([
-            (user, user) for user in member_list]))
+
+        MEMBER_CHOICES = [
+            (user, user.id) for user in club_members
+        ]
+
+        self.fields['members'] = forms.ChoiceField(choices=MEMBER_CHOICES)
 
     password = forms.CharField(label="Password", widget=forms.PasswordInput())

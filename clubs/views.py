@@ -178,17 +178,20 @@ def tournaments(request):
 
 @login_required
 def make_owner(request, club_id):
-    club_members = ClubMember.objects.filter(club=club_id)
+    club_members = ClubMember.objects.filter(club=club_id).select_related('user')
+
     club = Club.objects.get(id = club_id)
     current_user = request.user
     if request.method=='POST':
-        form = PassOwnershipForm(request.POST, club_members)
+        form = PassOwnershipForm(request.POST)
         if form.is_valid():
             password = form.cleaned_data.get('password')
             if check_password(password, current_user.password):
-                new_owner = form.cleaned_data.get['members']['user']
-                club.owner = new_owner
+                new_owner = form.cleaned_data.get['members']
+                club.owner = User.objects.get(pk = new_owner)
                 club.save()
-    else:
-        form = PassOwnershipForm(club_members)
+                return redirect('show_club')
+        else:
+            print("Form is invalid")
+    form = PassOwnershipForm(club_members)
     return render(request, 'make_owner.html', {'form': form, 'club': club})
