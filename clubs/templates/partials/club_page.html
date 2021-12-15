@@ -20,11 +20,6 @@
         <input type="submit" class="btn btn-secondary" value="Log in to join"/>
       </form>
       {% endif %}
-
-    {% else %}
-    <form action="{% url 'make_owner' club.id %}">
-      <input type="submit" class="btn btn-secondary" value="Pass ownership"/>
-    </form>
     {% endif %}
 
     {% if user.is_authenticated and exists_in_club %}

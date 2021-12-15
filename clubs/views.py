@@ -93,6 +93,22 @@ def password(request):
     form = PasswordForm()
     return render(request, 'password.html', {'form': form})
 
+@login_required
+def make_owner(request, club_id, user_id):
+    club = Club.objects.get(id = club_id)
+    user = User.objects.get(pk = user_id)
+    current_user = request.user
+    if request.method=='POST':
+        form = PassOwnershipForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data.get('password')
+            if check_password(password, current_user.password):
+                club.save()
+                return redirect('show_club', club)
+        else:
+            print("Form is invalid")
+    form = PassOwnershipForm()
+    return render(request, 'make_owner.html', {'form': form, 'club': club, 'user': user})
 
 # Club page view
 def show_club(request, club_id):
@@ -175,23 +191,3 @@ def member_id(request, userid):
 def tournaments(request):
     tournaments = Tournament.objects.all()
     return render(request, 'tournaments.html', {'tournaments': tournaments})
-
-@login_required
-def make_owner(request, club_id):
-    club_members = ClubMember.objects.filter(club=club_id).select_related('user')
-
-    club = Club.objects.get(id = club_id)
-    current_user = request.user
-    if request.method=='POST':
-        form = PassOwnershipForm(request.POST)
-        if form.is_valid():
-            password = form.cleaned_data.get('password')
-            if check_password(password, current_user.password):
-                new_owner = form.cleaned_data.get['members']
-                club.owner = User.objects.get(pk = new_owner)
-                club.save()
-                return redirect('show_club')
-        else:
-            print("Form is invalid")
-    form = PassOwnershipForm(club_members)
-    return render(request, 'make_owner.html', {'form': form, 'club': club})

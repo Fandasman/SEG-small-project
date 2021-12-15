@@ -71,22 +71,13 @@ class PasswordForm(forms.Form):
         if password_confirmation != new_password:
             self.add_error('password_confirmation', "Passwords don't match!")
 
+class PassOwnershipForm(forms.Form):
 
+    password = forms.CharField(label="Password", widget=forms.PasswordInput())
+    password_confirmation = forms.CharField(label="Confirm password", widget=forms.PasswordInput())
+    
 class ClubCreationForm(forms.ModelForm):
     class Meta:
         model = Club
         fields = ["name", "location", "description"]
         widgets = { "description": forms.Textarea() }
-
-class PassOwnershipForm(forms.Form):
-
-    def __init__(self, club_members, *args, **kwargs):
-        super(PassOwnershipForm, self).__init__(*args, **kwargs)
-
-        MEMBER_CHOICES = [
-            (user, user.id) for user in club_members
-        ]
-
-        self.fields['members'] = forms.ChoiceField(choices=MEMBER_CHOICES)
-
-    password = forms.CharField(label="Password", widget=forms.PasswordInput())
