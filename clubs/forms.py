@@ -75,7 +75,14 @@ class PassOwnershipForm(forms.Form):
 
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
     password_confirmation = forms.CharField(label="Confirm password", widget=forms.PasswordInput())
-    
+
+    def clean(self):
+        super().clean()
+        password = self.cleaned_data.get('password')
+        password_confirmation = self.cleaned_data.get('password_confirmation')
+        if password_confirmation != password:
+            self.add_error('password_confirmation', "Passwords don't match!")
+
 class ClubCreationForm(forms.ModelForm):
     class Meta:
         model = Club
