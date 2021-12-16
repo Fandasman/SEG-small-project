@@ -1,3 +1,4 @@
+"""The database unseeder removing all fake data"""
 from django.core.management.base import BaseCommand, CommandError
 from clubs.models import User, Club
 
