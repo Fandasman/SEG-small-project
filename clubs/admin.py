@@ -1,6 +1,6 @@
 """Cofiguration of the admin interface for microblogs."""
 from django.contrib import admin
-from .models import User, Club, ClubMember, ClubOfficer, Tournament, TournamentOfficer, TournamentParticipant, Match, ClubMemberApplications
+from .models import User, Club, ClubMember, Tournament, TournamentOfficer, TournamentParticipant, Match, ClubMemberApplications
 # Register your models here.
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -21,13 +21,6 @@ class ClubMemberAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
     list_display = [
         'user', 'club', 'role'
-    ]
-
-@admin.register(ClubOfficer)
-class ClubOfficerAdmin(admin.ModelAdmin):
-    """Configuration of the admin interface for users."""
-    list_display = [
-        'user', 'club',
     ]
 
 @admin.register(Tournament)
@@ -59,7 +52,7 @@ class MatchAdmin(admin.ModelAdmin):
     ]
 
 @admin.register(ClubMemberApplications)
-class ClubMemberApplicationsAdmin(admin.ModelAdmin):
+class ClubMemberApplicationAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
     list_display = [
         'user', 'club', 'status',
