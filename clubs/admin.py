@@ -52,7 +52,7 @@ class MatchAdmin(admin.ModelAdmin):
     ]
 
 @admin.register(ClubMemberApplications)
-class ClubMemberApplicationsAdmin(admin.ModelAdmin):
+class ClubMemberApplicationAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
     list_display = [
         'user', 'club', 'status',
