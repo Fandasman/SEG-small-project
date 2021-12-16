@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password
 from datetime import timedelta
 from django.utils import timezone
 from faker import Faker
-from clubs.models import User, Club, ClubMember, Tournament, TournamentOfficer, TournamentParticipant
+from clubs.models import User, Club, ClubMember, Tournament, TournamentOfficer, TournamentParticipant, Match
 
 class Command(BaseCommand):
     """The database seeder."""
@@ -224,6 +224,43 @@ class Command(BaseCommand):
                     club = self.clubs[n],
                     role = 'OFF'
                 )
+
+                """Generate tournament data"""
+                self.current_tournament = Tournament.objects.create(
+                    club = self.clubs[n],
+                    organizer = self.user,
+
+                    name = "Tournament of Club Champions: " + self.clubs[n].name,
+                    description = "This is our first championship tournament.",
+                    capacity = 20,
+                    deadline = timezone.now() + timedelta(days=-14),
+                    start = timezone.now() + timedelta(days=-7),
+                    finished = True,
+                )
+
+                TournamentOfficer.objects.create(
+                    officer = self.user,
+                    tournament = Tournament.objects.get(name = "Tournament of Club Champions: " + self.clubs[n].name),
+                )
+
+                self.first_contestant = TournamentParticipant.objects.create(
+                    participant = User.objects.get(id = self.user.id - 1),
+                    tournament = Tournament.objects.get(name = "Tournament of Club Champions: " + self.clubs[n].name),
+                )
+
+                self.second_contestant = TournamentParticipant.objects.create(
+                    participant = User.objects.get(id = self.user.id - 2),
+                    tournament = Tournament.objects.get(name = "Tournament of Club Champions: " + self.clubs[n].name),
+                )
+
+                Match.objects.create(
+                    tournament = Tournament.objects.get(name = "Tournament of Club Champions: " + self.clubs[n].name),
+                    participant_first = self.first_contestant.participant,
+                    participant_second = self.second_contestant.participant,
+                    start = timezone.now() + timedelta(days=-7),
+                    result = 'first_win'
+                )
+
                 n+=1
             else:
                 ClubMember.objects.create(
