@@ -182,21 +182,16 @@ def tournament_organize(request):
         organizer = request.user
         form = TournamentForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data.get('name')
-            description = form.cleaned_data.get('description')
-            deadline = form.cleaned_data.get('deadline')
-            capacity = form.cleaned_data.get('capacity')
-            start = form.cleaned_data.get('start')
-            tournament = Tournament.objects.create(
+            tournament = Tournament(
                 club = club,
                 organizer = organizer,
-                name = name,
-                description = description,
-                capacity = capacity,
-                deadline = deadline,
-                start = start,
-                finished = False
+                name = form.cleaned_data.get('name'),
+                description = form.cleaned_data.get('description'),
+                capacity = form.cleaned_data.get('capacity'),
+                deadline = form.cleaned_data.get('deadline'),
+                start = form.cleaned_data.get('start')
             )
+            tournament.save()
             return redirect('show_club', club_id)
     else:
         form = TournamentForm()
@@ -237,27 +232,25 @@ def make_owner(request, club_id, user_id):
     form = PassOwnershipForm()
     return render(request, 'make_owner.html', {'form': form, 'club': club, 'selected_user': selected_user})
 
-def tournament_edit(request, club_id, tournament_id):
-    club = Club.objects.get(pk = club_id)
-    tournament = Tournament.objects.get(pk = tournament_id, club = club)
-
-    form = TournamentForm(instance = tournament)
-
-    return render(request, 'tournament_edit.html', {'form': form})
-
 @login_required
-def tournament_editor(request):
-    if(request.method == 'POST'):
+def tournament_edit(request, tournament_id):
+    if request.method == 'POST':
         form = TournamentForm(request.POST)
         if form.is_valid():
-            tournament = Tournament.objects.get(id=form.cleaned_data.get('id'))
+            tournament  = Tournament.objects.get(id=tournament_id)
             tournament.name = form.cleaned_data.get('name')
             tournament.description = form.cleaned_data.get('description')
-            tournament.deadline = form.cleaned_data.get('deadline')
             tournament.capacity = form.cleaned_data.get('capacity')
+            tournament.deadline = form.cleaned_data.get('deadline')
             tournament.start = form.cleaned_data.get('start')
             tournament.save()
             return redirect('show_club', tournament.club.id)
+    else:
+        tournament = Tournament.objects.get(id=tournament_id)
+        print(f"Tournament {tournament}")
+        form = TournamentForm(instance=tournament)
+
+        return render(request, 'tournament_edit.html', {'form': form})
 
 
 def club_application(request, club_id):
@@ -325,3 +318,12 @@ def application_list_action(request, club_id, userid, action):
     allApplicants = ClubMemberApplications.objects.filter(club=qryClub.id).prefetch_related('user').prefetch_related('club')
     rU_existsInCLub = ClubMember.objects.filter(user=rU.id,club=qryClub.id).exists()
     return render(request, 'applicant_list.html', {'members':allApplicants, 'club':qryClub, 'exists_in_club':rU_existsInCLub, 'rU_hasPriveleges': rU_hasPriveleges})
+
+
+@login_required
+def tournament_delete(request, tournament_id):
+
+    tournament = Tournament.objects.get(id=tournament_id)
+    club_id = tournament.club.id
+    tournament.delete()
+    return redirect('show_club', club_id)   
