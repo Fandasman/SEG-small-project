@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import SignUpForm, LogInForm, UpdateForm, PasswordForm, ClubCreationForm, TournamentForm, ClubApplicationForm, PassOwnershipForm
-from .models import User, Club, Tournament, ClubMember, ClubOfficer, ClubMemberApplications
+from .models import User, Club, Tournament, ClubMember, ClubMemberApplications
 
 from django.contrib.auth.decorators import login_required
 

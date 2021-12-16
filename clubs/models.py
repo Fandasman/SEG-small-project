@@ -71,13 +71,6 @@ class ClubMember(models.Model):
     class Meta():
         unique_together = ('user', 'club',)
 
-# Create the Club officer model.
-class ClubOfficer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    class Meta():
-        unique_together = ('user', 'club',)
-
 class Tournament(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organizer = models.ForeignKey(User, on_delete=models.CASCADE)
