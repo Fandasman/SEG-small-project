@@ -1,8 +1,10 @@
 """The database seeder generating fake data"""
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.hashers import make_password
+from datetime import timedelta
+from django.utils import timezone
 from faker import Faker
-from clubs.models import User, Club, ClubMember
+from clubs.models import User, Club, ClubMember, Tournament, TournamentOfficer, TournamentParticipant
 
 class Command(BaseCommand):
     """The database seeder."""
@@ -151,8 +153,47 @@ class Command(BaseCommand):
 
             self.clubs.append(self.club)
 
-        n = 0
+        """Generate two sample tournaments"""
+        self.current_tournament = Tournament.objects.create(
+            club = Club.objects.get(name = "Kerbal Chess Club"),
+            organizer = User.objects.get(username = 'valker'),
 
+            name = "Tournament 2",
+            description = "This is our next tournament.",
+            capacity = 10,
+            deadline = timezone.now() + timedelta(days=1),
+            start = timezone.now() + timedelta(days=4),
+            finished = False,
+        )
+
+        TournamentOfficer.objects.create(
+            officer = User.objects.get(username = 'valker'),
+            tournament = Tournament.objects.get(name = "Tournament 2"),
+        )
+
+        self.past_tournament = Tournament.objects.create(
+            club = Club.objects.get(name = "Kerbal Chess Club"),
+            organizer = User.objects.get(username = 'valker'),
+
+            name = "Tournament",
+            description = "This is our first tournament.",
+            capacity = 10,
+            deadline = timezone.now() + timedelta(days=-1),
+            start = timezone.now() + timedelta(days=2),
+            finished = False,
+        )
+
+        TournamentOfficer.objects.create(
+            officer = User.objects.get(username = 'valker'),
+            tournament = Tournament.objects.get(name = "Tournament"),
+        )
+
+        TournamentParticipant.objects.create(
+            participant = User.objects.get(username = 'jebker'),
+            tournament = Tournament.objects.get(name = "Tournament"),
+        )
+
+        n = 0
         """Generate 100 random fake users and club member objects"""
         for i in range(1, 101):
             fakeUsername = self.faker.user_name()
@@ -170,6 +211,12 @@ class Command(BaseCommand):
                 experience = 'beginner',
                 bio = fakeBio
             )
+
+            if(self.clubs[n] == Club.objects.get(name = 'Kerbal Chess Club')):
+                TournamentParticipant.objects.create(
+                    participant = self.user,
+                    tournament = Tournament.objects.get(name = "Tournament"),
+                )
 
             if(i % 10 == 0):
                 ClubMember.objects.create(
