@@ -7,7 +7,7 @@
 <div class="container">
   <div class="row">
     <h1>Edit tournament.</h1>
-    <form action="{% url 'tournament_editor' %}" method="post">
+    <form action="" method="post">
       {% csrf_token %}
       {% include 'partials/bootstrap_form.html' with form=form %}
       <input type="submit" value="Save" class = "btn btn-primary">
