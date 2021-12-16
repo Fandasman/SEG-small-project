@@ -11,7 +11,7 @@ class MakeOwnerTestCase(TestCase):
                 'clubs/tests/fixtures/default_club.json',
                 'clubs/tests/fixtures/default_club_member.json',
                 'clubs/tests/fixtures/other_users.json']
-                
+
 
     def setUp(self):
         self.user = User.objects.get(username='johndoe')
@@ -24,8 +24,8 @@ class MakeOwnerTestCase(TestCase):
             role = 'OFF'
         )
         self.form_input = {
-            'password' : 'Password123', 
-            'password_confirmation' : 'Password123', 
+            'password' : 'Password123',
+            'password_confirmation' : 'Password123',
         }
 
     def test_make_owner_url(self):
@@ -50,18 +50,3 @@ class MakeOwnerTestCase(TestCase):
         self.assertTemplateUsed(response, 'show_club.html')
         self.club.refresh_from_db()
         self.assertEqual(self.club.owner, self.target_user)
-    
-    
-
-
-        
-   
-
-        
-
-
-
-
-
-
-
