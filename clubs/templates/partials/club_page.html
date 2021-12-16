@@ -26,19 +26,16 @@
         <input type="submit" class="btn btn-secondary" value="Log in to join"/>
       </form>
       {% endif %}
-
-    {% else %}
-
     {% endif %}
 
     {% if user.is_authenticated and exists_in_club %}
-    <a href="/club/{{club.id}}/memberlist" class="btn btn-secondary my-3">View member list</a>
+    <a href="/club/{{club.id}}/memberlist" class="btn btn-primary my-3">View member list</a>
     {% endif %}
 
 
     {% if user.is_authenticated  %}
         {%if roleCheck.role == 'OFF' or roleCheck.role == 'OWN'%}
-        <a href="/club/{{club.id}}/applicationlist" class="btn btn-primary my-3">View Applications</a>
+        <a href="/club/{{club.id}}/applicationlist" class="btn btn-warning my-3">View Applications</a>
         {%endif%}
     {% endif %}
 
