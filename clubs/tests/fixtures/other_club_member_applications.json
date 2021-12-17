@@ -1,0 +1,44 @@
+[
+    {
+      "model": "clubs.clubmemberapplications",
+      "pk": 2,
+      "fields": {
+        "user": 2,
+        "club": 2,
+        "personal_statement": "I would like to join your club.",
+        "status": "A"
+      }
+    },
+
+    {
+      "model": "clubs.clubmemberapplications",
+      "pk": 3,
+      "fields": {
+        "user": 3,
+        "club": 3,
+        "personal_statement": "I am interested in joing your club.",
+        "status": "D"
+      }
+    },
+
+    {
+        "model": "clubs.clubmemberapplications",
+        "pk": 4,
+        "fields": {
+          "user": 4,
+          "club": 4,
+          "personal_statement": "I want to join your club.",
+          "status": "P"
+        }
+      },
+      {
+        "model": "clubs.clubmemberapplications",
+        "pk": 5,
+        "fields": {
+          "user": 3,
+          "club": 2,
+          "personal_statement": "I am really looking forward to being part of your club.",
+          "status": "A"
+        }
+      }
+]

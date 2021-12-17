@@ -1,0 +1,12 @@
+[
+    {
+      "model": "clubs.clubmemberapplications",
+      "pk": 1,
+      "fields": {
+        "user": 1,
+        "club": 1,
+        "personal_statement": "Hello",
+        "status": "P"
+      }
+    }
+]
