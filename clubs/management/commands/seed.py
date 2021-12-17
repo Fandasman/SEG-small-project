@@ -97,6 +97,12 @@ class Command(BaseCommand):
         self.clubs.append(self.club)
 
         ClubMember.objects.create(
+            user = User.objects.get(username = "clubber"),
+            club = self.club,
+            role = 'OWN'
+        )
+
+        ClubMember.objects.create(
             user = User.objects.get(username = "jebker"),
             club = self.club,
             role = 'OFF'
@@ -125,6 +131,12 @@ class Command(BaseCommand):
             description = 'This is the one and only Clubbie Club.',
         )
         self.clubs.append(self.club)
+
+        ClubMember.objects.create(
+            user = User.objects.get(username = "clubber"),
+            club = self.club,
+            role = 'OWN'
+        )
 
         ClubMember.objects.create(
             user = User.objects.get(username = "billieker"),

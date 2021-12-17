@@ -27,7 +27,8 @@
         <form action="/club/{{clubid}}/apply" method="post">
           {%csrf_token%}
           {% include 'partials/club_application_form.html' with form=form %}
-          <input type="submit" value="Submit">
+          <br>
+          <input type="submit" value="Submit" class="btn btn-primary">
         </form>
       </div>
     </div>

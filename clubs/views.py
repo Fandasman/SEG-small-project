@@ -65,9 +65,6 @@ def profile(request):
         form = UpdateForm(instance=request.user)
     return render(request, 'profile.html', {'form': form})
 
-def profile_clubs(request):
-    return render(request, 'profile_clubs.html')
-
 # Edit password view
 @login_required
 def password(request):
@@ -326,4 +323,4 @@ def tournament_delete(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     club_id = tournament.club.id
     tournament.delete()
-    return redirect('show_club', club_id)   
+    return redirect('show_club', club_id)
