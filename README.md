@@ -10,7 +10,7 @@ The members of the team are:
 - Yuliang Zhang
 
 ## Project structure
-The project is called `system`.  It currently consists of a single app `clubs`.
+The project is called `system`.  It consists of a single app `clubs`.
 
 ## Deployed version of the application
 The deployed version of the application can be found at [URL](URL).
@@ -50,5 +50,6 @@ $ python3 manage.py test
 
 ## Sources
 The packages used by this application are specified in `requirements.txt`
+The code used from clucker was substantially referenced in this chess hub project.
 
 *Declare are other sources here.*
