@@ -15,9 +15,6 @@
 
       {% if user.is_authenticated %}
         {%if exists_in_club%}
-        <form action="#">
-          <input type="submit" class="btn btn-secondary" value="Leave"/>
-        </form>
         {%else%}
         <a href="/club/{{club.id}}/apply" class="btn btn-primary my-3">Apply</a>
         {%endif%}
