@@ -54,18 +54,20 @@ class Club(models.Model):
     location = models.CharField(max_length = 100)
     description = models.CharField(max_length = 520, blank = True)
 
+# Create the Club member application model.
+class ClubMemberApplications(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    personal_statement = models.CharField(max_length = 520, blank = True)
+    status = models.CharField(max_length = 2, choices = [('P','Pending'),('A','Accepted'),('D','Declined')], default = 'P')
+    class Meta():
+        unique_together = ('user', 'club',)
+
 # Create the Club member model.
 class ClubMember(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     role = models.CharField(max_length = 3, choices = [('MEM','Member'),('OFF','Officer'),('OWN','Owner')], default = 'MEM')
-    class Meta():
-        unique_together = ('user', 'club',)
-
-# Create the Club officer model.
-class ClubOfficer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
     class Meta():
         unique_together = ('user', 'club',)
 
@@ -79,7 +81,7 @@ class Tournament(models.Model):
     deadline = models.DateField(blank = False)
     start = models.DateField(blank = False)
     finished = models.BooleanField(default = False)
-    
+
     def __str__(self):
         return f"{self.name}, Start Date: {self.start}"
 
