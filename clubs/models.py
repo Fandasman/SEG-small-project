@@ -75,7 +75,7 @@ class Tournament(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     organizer = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    name = models.CharField(max_length = 50)
+    name = models.CharField(max_length = 100)
     description = models.CharField(max_length = 520, blank = True)
     capacity = models.IntegerField(validators = [MinValueValidator(2), MaxValueValidator(96)], blank = False)
     deadline = models.DateField(blank = False)
