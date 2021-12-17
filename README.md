@@ -3,7 +3,7 @@
 ## Team members
 The members of the team are:
 - Ivan Arabadzhiev
-- Arham Azhary 
+- Arham Azhary
 - Frantisek Hermanek
 - Volodymyr Hromyk
 - Bradly Zeneli
@@ -14,7 +14,8 @@ The project is called `system`.  It consists of a single app `clubs`.
 
 
 ## Deployed version of the application
-The deployed version of the application can be found at [URL](URL).
+The deployed version of the application can be found at https://nameless-wildwood-11631.herokuapp.com/.
+The admin interface can be accessed at https://nameless-wildwood-11631.herokuapp.com/admin.
 
 ## Installation instructions
 To install the software and use it in your local development environment, you must first set up and activate a local development environment.  From the root of the project:
@@ -51,7 +52,7 @@ $ python3 manage.py test
 
 ## Sources
 The packages used by this application are specified in `requirements.txt`
-The code used from clucker was substantially referenced in this chess hub project 
+The code used from clucker was substantially referenced in this chess hub project
 
 
 
