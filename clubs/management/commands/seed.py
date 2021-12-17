@@ -208,10 +208,10 @@ class Command(BaseCommand):
         n = 0
         """Generate 100 random fake users and club member objects"""
         for i in range(1, 101):
-            fakeUsername = self.faker.user_name()
+            fakeUsername = self.faker.user_name() + str(i)
             fakeName = self.faker.first_name()
             fakeLastName = self.faker.last_name()
-            fakeEmail = self.faker.ascii_email()
+            fakeEmail = fakeUsername + '@example.org'
             fakeBio = self.faker.text(max_nb_chars = 520)
 
             self.user = User.objects.create(
